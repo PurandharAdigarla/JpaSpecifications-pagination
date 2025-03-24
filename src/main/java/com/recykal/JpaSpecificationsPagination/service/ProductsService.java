@@ -1,6 +1,7 @@
 package com.recykal.JpaSpecificationsPagination.service;
 
 import com.recykal.JpaSpecificationsPagination.entity.Products;
+import com.recykal.JpaSpecificationsPagination.exceptions.ProductNotFoundException;
 import com.recykal.JpaSpecificationsPagination.repository.ProductsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,20 +24,24 @@ public class ProductsService
         return productsRepo.save(product);
     }
 
-    public Products deleteProduct(int id) throws IOException
+    public Products deleteProduct(int id) throws ProductNotFoundException
     {
         Optional<Products> product = productsRepo.findById(id);
+        if (product.isEmpty()) throw new ProductNotFoundException("Product with the id: "+id+" doesn't exist");
         productsRepo.deleteById(id);
         return product.get();
     }
 
-    public Products updateProduct(int id, Products product) throws IOException {
-        //Optional<Products> oldProduct = paginationRepo.findById(id);
+    public Products updateProduct(int id, Products product) throws ProductNotFoundException {
+        Optional<Products> oldProduct = productsRepo.findById(id);
+        if (oldProduct.isEmpty()) throw new ProductNotFoundException("Product with the id: "+id+" doesn't exist");
         product.setId(id);
         return productsRepo.save(product);
     }
 
-    public Products viewProduct(int id) {
+    public Products viewProduct(int id)throws ProductNotFoundException {
+        Optional<Products> product= productsRepo.findById(id);
+        if (product.isEmpty()) throw new ProductNotFoundException("Product with the id: "+id+" doesn't exist");
         return productsRepo.findById(id).get();
     }
 

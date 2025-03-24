@@ -2,6 +2,7 @@ package com.recykal.JpaSpecificationsPagination.controller;
 
 import com.recykal.JpaSpecificationsPagination.dto.ResponseDto;
 import com.recykal.JpaSpecificationsPagination.entity.Products;
+import com.recykal.JpaSpecificationsPagination.exceptions.ProductNotFoundException;
 import com.recykal.JpaSpecificationsPagination.service.ProductsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,12 +30,12 @@ public class ProductsController
     }
 
     @DeleteMapping("/deleteProduct/{id}")
-    ResponseEntity<Products> deleteProduct(@PathVariable int id) throws IOException {
+    ResponseEntity<Products> deleteProduct(@PathVariable int id){
         return new ResponseEntity<>(productsService.deleteProduct(id), HttpStatus.OK);
     }
 
     @PutMapping("/updateProduct/{id}")
-    ResponseEntity<Products> updateProduct(@PathVariable int id, Products product) throws IOException {
+    ResponseEntity<Products> updateProduct(@PathVariable int id, Products product) {
         return new ResponseEntity<>(productsService.updateProduct(id, product), HttpStatus.OK);
     }
 
